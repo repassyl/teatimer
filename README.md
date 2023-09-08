@@ -1,3 +1,14 @@
+# Simple Tea Timer
+
+## To Do
+
+[x] Timer
+[x] Default intervals
+[] Progressbar
+[] Play sound when timer ends
+[] Publish to Github
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
