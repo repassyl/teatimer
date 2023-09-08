@@ -8,7 +8,7 @@ function Timer() {
   const [isRunning, setIsRunning] = useState(false);
   // Initial state of the selected value
   const [selected, setSelected] = useState(
-    localStorage.getItem("selectedValue") || "45"
+    localStorage.getItem("selectedValue") || 1
   );
 
   const bootAudioContext = () => {
@@ -24,10 +24,14 @@ function Timer() {
     bootAudioContext();
     // Set the time to the given minutes in seconds
     setTime(minutes * 60);
+    // Store the selected value in localStorage
+    localStorage.setItem("selectedValue", String(minutes));
+
+    // Set the selected value based on the provided time
+    setSelected(minutes);
     // Set the running state to true
     setIsRunning(true);
-    // Store the selected value in localStorage
-    localStorage.setItem("selectedValue", selected);
+
   };
 
   // Function to stop the timer
@@ -64,32 +68,28 @@ function Timer() {
     } else if (isRunning && time === 0) {
       stopTimer();
       alert("Tea is ready!");
-      // Play a sound when the timer is done
+      // Play a sound when the timer is done TODO: Does not work yet.
       play();
     }
   }, [isRunning, time, play]);
 
   const timeOptions = [
-    15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255,
-    270, 285, 300, 315, 330, 345, 360, 375, 390, 405, 420, 435, 450, 465, 480, 495,
-    510, 525, 540, 555, 570, 585, 600, 615, 630, 645, 660, 675, 690, 705, 720, 735,
-    750, 765, 780, 795, 810, 825, 840, 855, 870, 885, 900
+    0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30
   ];
 
   // Set the default value of the select element based on selected state
-  const defaultSelectValue = timeOptions.includes(parseInt(selected))
+  const defaultSelectValue = timeOptions.includes(parseFloat(selected))
     ? selected
-    : "45"; // Default to 45 if the selected value is not in the options
+    : 1;
 
   return (
     <div className="SimpleTeaTimer">
-      <h1>Simple Tea Timer {selected}</h1>
+      <h1>Simple Tea Timer</h1>
       <p>{formatTime(time)}</p>
-      {/* Add a select element with options */}
       <select
         value={defaultSelectValue}
         onChange={(e) => {
-          setSelected(e.target.value);
+          startTimer(e.target.value);
         }}
       >
         {timeOptions.map((option) => (
@@ -98,9 +98,7 @@ function Timer() {
           </option>
         ))}
       </select>
-      {/* Add "Start" button to start the timer */}
-      <button onClick={() => startTimer(selected / 60)}>Start</button>
-      {/* Add some spaces between buttons */}
+      <button onClick={() => startTimer(selected)}>Start</button>
       <button onClick={stopTimer}>Stop</button>
       <button onClick={() => startTimer(1)}>Green (1:00)</button>
       <button onClick={() => startTimer(2)}>Black (2:00)</button>
