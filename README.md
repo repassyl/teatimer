@@ -3,9 +3,13 @@
 ## To Do
 
 [x] Timer
+
 [x] Default intervals
+
 [] Progressbar
+
 [] Play sound when timer ends
+
 [] Publish to Github
 
 
